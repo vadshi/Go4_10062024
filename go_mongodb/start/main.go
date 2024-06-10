@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	// "go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -29,4 +29,23 @@ func main() {
 	if err := client.Ping(ctx, readpref.Primary()); err != nil {
 		log.Fatal(err)
 	}
+
+	// Get all database names
+	dbNames, err := client.ListDatabaseNames(ctx, bson.M{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(dbNames)
+
+	// Create new database and collection
+	testDB := client.Database("test")
+
+	fmt.Printf("%T\n", testDB)
+
+	exampleCollection := testDB.Collection("example")
+
+	fmt.Printf("%T\n", exampleCollection)
+
+
+
 }
