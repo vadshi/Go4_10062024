@@ -46,6 +46,7 @@ func main() {
 
 	exampleCollection := testDB.Collection("example")
 
+	// Delete full collection
 	// defer exampleCollection.Drop(ctx)
 
 	fmt.Printf("%T\n", exampleCollection)
@@ -99,7 +100,7 @@ func main() {
 	fmt.Println("someStringSlice", exampleResult["someStringSlice"])
 
 	// find document by value of ObjectID
-	objectId, err := primitive.ObjectIDFromHex("6666ccb73649a6cc6fb508f3")
+	objectId, err := primitive.ObjectIDFromHex("6666e80bf3dd29088b524a4e")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -124,4 +125,58 @@ func main() {
 	fmt.Println("someStringSlice", exampleRes["someStringSlice"])
 
 
+	// Update document
+	rUpd, err := exampleCollection.UpdateOne(ctx, 
+		bson.M{"_id": r.InsertedID},
+		bson.D{
+			{Key: "$set", Value: bson.M{"someString": "Updated string"}},
+		},
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(rUpd.ModifiedCount)
+
+	// Check new data
+
+	c = exampleCollection.FindOne(ctx, bson.M{"_id": r.InsertedID})
+
+	var exampleResult2 bson.M
+	err = c.Decode(&exampleResult2)  
+	if err != nil {
+		log.Fatal(err)
+	}
+	// print document data
+	fmt.Printf("\nItem with ID: %v containing the following:\n", exampleResult2["_id"])
+	fmt.Println("someString", exampleResult2["someString"])
+	fmt.Println("someInteger", exampleResult2["someInteger"])
+	fmt.Println("someStringSlice", exampleResult2["someStringSlice"])
+
+	rUpd2, err := exampleCollection.UpdateMany(ctx, 
+		bson.D{{Key:"someInteger", Value: bson.D{{Key:"$gt", Value: 60}}}},
+		bson.D{
+			{Key: "$set", Value: bson.M{"someInteger": 60}},
+		},
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(rUpd2.ModifiedCount)
+
+	exampleAll, err := exampleCollection.Find(ctx, bson.M{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	var examplesRes []bson.M
+	if err = exampleAll.All(ctx, &examplesRes); err != nil {
+		log.Fatal(err)
+	}
+	for _, e := range examplesRes {
+		fmt.Printf("\nItem with ID: %v containing the following:\n", e["_id"])
+		fmt.Println("someString", e["someString"])
+		fmt.Println("someInteger", e["someInteger"])
+		fmt.Println("someStringSlice", e["someStringSlice"])
+	}
+
+	
 }
