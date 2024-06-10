@@ -44,8 +44,22 @@ func main() {
 
 	exampleCollection := testDB.Collection("example")
 
+	// defer exampleCollection.Drop(ctx)
+
 	fmt.Printf("%T\n", exampleCollection)
 
+	// Insert new document in db
+	example := bson.D{
+		{Key: "someString", Value: "Example String"},
+		{Key: "someInteger", Value: 12},
+		{Key: "someStringSlice", Value: []string{"Example1", "Example2", "Example3"}},
+	}
 
+	r, err := exampleCollection.InsertOne(ctx, example)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// print "_id" of new document
+	fmt.Println(r.InsertedID)
 
 }
