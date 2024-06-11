@@ -89,4 +89,12 @@ mutation DeletePost {
   }
 }
 
+
+query Types {
+__type(name: "Post") {
+    fields {
+      name
+    }
+  }
+}
 ```
