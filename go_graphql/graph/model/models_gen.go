@@ -23,7 +23,7 @@ type NewPost struct {
 }
 
 type Post struct {
-	ID          string    `json:"_id"`
+	ID          string    `json:"_id" bson:"_id"`
 	Title       string    `json:"Title"`
 	Content     string    `json:"Content"`
 	Author      string    `json:"Author"`
