@@ -44,3 +44,20 @@ func Connect() *DB {
 func collectionHelper(db *DB, collectionName string) *mongo.Collection {
 	return db.client.Database("blog_posts").Collection(collectionName)
 }
+
+func(db *DB) GetPost(id string) *model.Post {
+	collection := collectionHelper(db, "posts")
+	ctx, cancel := context.WithTimeout(context.Background(), 30 * time.Second)
+	defer cancel()
+
+	_id, _ := primitive.ObjectIDFromHex(id)
+	filter := bson.M{"_id": _id}
+	
+	var post model.Post
+
+	err := collection.FindOne(ctx, filter).Decode(&post)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return &post
+}

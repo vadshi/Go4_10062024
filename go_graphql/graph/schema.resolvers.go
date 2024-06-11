@@ -8,7 +8,10 @@ import (
 	"context"
 	"fmt"
 	"go_graphql/graph/model"
+	"go_graphql/database"
 )
+
+var db = database.Connect()
 
 // CreatePost is the resolver for the CreatePost field.
 func (r *mutationResolver) CreatePost(ctx context.Context, input model.NewPost) (*model.Post, error) {
@@ -32,7 +35,7 @@ func (r *queryResolver) GetAllPosts(ctx context.Context) ([]*model.Post, error) 
 
 // GetOnePost is the resolver for the GetOnePost field.
 func (r *queryResolver) GetOnePost(ctx context.Context, id string) (*model.Post, error) {
-	panic(fmt.Errorf("not implemented: GetOnePost - GetOnePost"))
+	return db.GetPost(id), nil
 }
 
 // Mutation returns MutationResolver implementation.
