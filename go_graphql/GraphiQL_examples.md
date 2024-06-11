@@ -49,10 +49,44 @@ query GetOnePost {
   GetOnePost(id: "6666ba378d120a3e0006d8df") {
     _id
     Title
+    Content
     Author
     Hero
     Published_At
     Updated_At
   }
 }
+
+query GetAllPosts {
+  GetAllPosts {
+    _id
+    Title
+    Content
+    Author
+    Hero
+    Published_At
+    Updated_At
+  }
+}
+
+mutation UpdatePost{
+  UpdatePost(id: "6666ba378d120a3e0006d8df"
+  input: {
+    Title: "Change title to check of working",
+    Content: "Change content"
+  }
+  )
+  {
+    _id
+    Title
+    Content
+  }
+}
+
+mutation DeletePost {
+  DeletePost(id: "6666ba378d120a3e0006d8df") {
+    deletePostId
+  }
+}
+
 ```
