@@ -15,7 +15,7 @@ var db = database.Connect()
 
 // CreatePost is the resolver for the CreatePost field.
 func (r *mutationResolver) CreatePost(ctx context.Context, input model.NewPost) (*model.Post, error) {
-	panic(fmt.Errorf("not implemented: CreatePost - CreatePost"))
+	return db.CreatePost(&input), nil
 }
 
 // UpdatePost is the resolver for the UpdatePost field.

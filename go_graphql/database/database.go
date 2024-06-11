@@ -63,10 +63,37 @@ func(db *DB) GetPost(id string) *model.Post {
 	return &post
 }
 
+
+// func(db *DB) GetPosts() []*model.Post {
+// 	collection := collectionHelper(db, "posts")
+// 	ctx, cancel := context.WithTimeout(context.Background(), 30 * time.Second)
+// 	defer cancel()
+
+// }
+
 func(db *DB) CreatePost(postInfo *model.NewPost) *model.Post {
+	collection := collectionHelper(db, "posts")
+	ctx, cancel := context.WithTimeout(context.Background(), 30 * time.Second)
+	defer cancel()
 
 	newPost := &model.Post{
 		ID: result.InsertedID.(primitive.ObjectID).Hex(),
 
 	}
+	return newPost
 }
+
+// func(db *DB) UpdatePost(id string, postInfo model.NewPost) *model.Post {
+// 	collection := collectionHelper(db, "posts")
+// 	ctx, cancel := context.WithTimeout(context.Background(), 30 * time.Second)
+// 	defer cancel()
+
+// }
+
+
+// func(db *DB) DeletePost(id string) *model.DeletePostResponse {
+// 	collection := collectionHelper(db, "posts")
+// 	ctx, cancel := context.WithTimeout(context.Background(), 30 * time.Second)
+// 	defer cancel()
+
+// }
