@@ -2,7 +2,7 @@
 
 ### Step 1
 ```
-user@usercomp:~/Projects/go_graphql$ go run github.com/99designs/gqlgen init
+user@usercomp:~/Projects/Go4/go_graphql$ go run github.com/99designs/gqlgen init
 Creating gqlgen.yml
 Creating graph/schema.graphqls
 Creating server.go
@@ -23,6 +23,8 @@ Files:
 ### Step 2
 Setting up GraphQL Schema for Go
 ```
+scalar Time
+
 type Post {
   _id: String!
   Title: String!
