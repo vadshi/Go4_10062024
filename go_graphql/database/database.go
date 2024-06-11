@@ -2,10 +2,11 @@ package database
 
 import (
 	"context"
+	"fmt"
 	"go_graphql/graph/model"
 	"log"
 	"time"
-	"fmt"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -52,7 +53,7 @@ func(db *DB) GetPost(id string) *model.Post {
 
 	_id, _ := primitive.ObjectIDFromHex(id)
 	filter := bson.M{"_id": _id}
-	
+
 	var post model.Post
 
 	err := collection.FindOne(ctx, filter).Decode(&post)
@@ -60,4 +61,12 @@ func(db *DB) GetPost(id string) *model.Post {
 		log.Fatal(err)
 	}
 	return &post
+}
+
+func(db *DB) CreatePost(postInfo *model.NewPost) *model.Post {
+
+	newPost := &model.Post{
+		ID: result.InsertedID.(primitive.ObjectID).Hex(),
+
+	}
 }
