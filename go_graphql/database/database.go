@@ -64,21 +64,43 @@ func(db *DB) GetPost(id string) *model.Post {
 }
 
 
-// func(db *DB) GetPosts() []*model.Post {
-// 	collection := collectionHelper(db, "posts")
-// 	ctx, cancel := context.WithTimeout(context.Background(), 30 * time.Second)
-// 	defer cancel()
+func(db *DB) GetPosts() []*model.Post {
+	collection := collectionHelper(db, "posts")
+	ctx, cancel := context.WithTimeout(context.Background(), 30 * time.Second)
+	defer cancel()
 
-// }
+	var posts []*model.Post
+	cursor, err := collection.Find(ctx, bson.M{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err = cursor.All(context.TODO(), &posts); err != nil {
+		log.Fatal(err)
+	}
+	return posts
+}
 
 func(db *DB) CreatePost(postInfo *model.NewPost) *model.Post {
 	collection := collectionHelper(db, "posts")
 	ctx, cancel := context.WithTimeout(context.Background(), 30 * time.Second)
 	defer cancel()
 
+	postInfo.PublishedAt = timePtr(time.Now())
+	postInfo.UpdatedAt = timePtr(time.Now())
+
+	result, err := collection.InsertOne(ctx, postInfo)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	newPost := &model.Post{
 		ID: result.InsertedID.(primitive.ObjectID).Hex(),
-
+		Title: postInfo.Title,
+		Content: postInfo.Content,
+		Author: *postInfo.Author,
+		Hero: *postInfo.Hero,
+		PublishedAt: *postInfo.PublishedAt,
+		UpdatedAt: *postInfo.UpdatedAt,
 	}
 	return newPost
 }

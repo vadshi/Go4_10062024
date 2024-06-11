@@ -30,7 +30,7 @@ func (r *mutationResolver) DeletePost(ctx context.Context, id string) (*model.De
 
 // GetAllPosts is the resolver for the GetAllPosts field.
 func (r *queryResolver) GetAllPosts(ctx context.Context) ([]*model.Post, error) {
-	panic(fmt.Errorf("not implemented: GetAllPosts - GetAllPosts"))
+	return db.GetPosts(), nil
 }
 
 // GetOnePost is the resolver for the GetOnePost field.
